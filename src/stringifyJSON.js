@@ -3,7 +3,7 @@ var stringifyJSON = function(obj) {
   if (Array.isArray(obj)) {
     let result = '';
     if (obj.length === 0) {
-      result.replace(/,.$/gi, ']');
+      result.replace(/,.$/gim, ']');
       return result;
     }
     if (obj.length > 0) {
