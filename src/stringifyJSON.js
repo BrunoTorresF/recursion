@@ -1,10 +1,12 @@
 var stringifyJSON = function(obj) {
   // your code goes here
+  if (typeof obj === 'number') {
+    return "'" + obj + "'"
+  }
   if (Array.isArray(obj)) {
     let result = '';
     if (obj.length === 0) {
-      result.replace(/,.$/gim, ']');
-      return result;
+      result;
     }
     if (obj.length > 0) {
       if (
@@ -13,25 +15,27 @@ var stringifyJSON = function(obj) {
         typeof obj[0] === 'symbol'
       ) {
         result += null;
-        return (result += ',' + stringifyJSON(obj.slice(1)));
+        result += ',' + stringifyJSON(obj.slice(1));
       }
       if (typeof obj[0] === 'number') {
         result += obj[0];
-        return (result += ',' + stringifyJSON(obj.slice(1)));
+        result += ',' + stringifyJSON(obj.slice(1));
       }
       if (typeof obj[0] === 'boolean') {
         result += obj[0];
-        return (result += ',' + stringifyJSON(obj.slice(1)));
+        result += ',' + stringifyJSON(obj.slice(1));
       }
       if (typeof obj[0] === 'string') {
         result += '"' + obj[0] + '"';
-        return (result += ',' + stringifyJSON(obj.slice(1)));
+        result += ',' + stringifyJSON(obj.slice(1));
       }
       if (Array.isArray(obj[0])) {
-        return stringifyJSON(obj[0]) + stringifyJSON(obj.slice(1));
+         result += stringifyJSON(obj[0]) + stringifyJSON(obj.slice(1));
       }
     }
+    return result.replace(/^\'/gi, '[\"', 1).replace(/\,$/i, "]'");
   }
+
   if (typeof obj === 'object' && obj !== null) {
     let string = '';
     for (let key in obj) {
@@ -55,10 +59,10 @@ var stringifyJSON = function(obj) {
         string += '"'+ key + '":' + '"' + obj[key] + '",';
       }
     }
-    return string;
+    return string.replace(/^/gi, "{");
   }
 };
-stringifyJSON([
+/*stringifyJSON([
   'hello',
   true,
   false,
@@ -68,9 +72,9 @@ stringifyJSON([
   'oh God',
   function() {},
   undefined,
-]);
+]);*/
 
-stringifyJSON({
+/*stringifyJSON({
   string0: 'hello',
   boolean0: true,
   boolean1: false,
@@ -78,6 +82,6 @@ stringifyJSON({
   number1: 6,
   number2: 8,
   string3: 'oh God',
-  notthisone: function(){},
+  notThisOne: function(){},
   omit: undefined,
-})
+})*/
